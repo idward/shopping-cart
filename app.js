@@ -7,7 +7,9 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var expressHbs = require('express-handlebars');
 var csrf = require('csurf');
+var flash = require('connect-flash');
 var db = require('./db/db');
+var passport = require('./auth/passport-config');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -30,6 +32,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(session({secret: 'mysecret', resave: false, saveUninitialized: false}));
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(csrf());
 app.use(express.static(path.join(__dirname, 'public')));
 
