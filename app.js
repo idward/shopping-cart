@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var expressHbs = require('express-handlebars');
+var db = require('./db/db');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -14,7 +15,7 @@ var app = express();
 app.set('view engine', '.hbs');
 app.engine('.hbs', expressHbs({
     layoutsDir: __dirname + '/views/layouts',
-    partialsDir:__dirname + '/views/partials',
+    partialsDir: __dirname + '/views/partials',
     defaultLayout: 'main',
     extname: '.hbs'
 }));
