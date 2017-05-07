@@ -10,7 +10,7 @@ var userSchema = new Schema({
 
 //加密password
 userSchema.methods.encryptPassword = function (password) {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(5), null);
 };
 
 //验证密码是否一致
