@@ -9,7 +9,21 @@ passport.use('local.signup', new LocalStrategy({
         passReqToCallback: true
     },
     function (req, email, password, done) {
-        console.log('aaaaaa');
+        //验证提交字段
+        req.checkBody('email','Email is required').notEmpty();
+        req.checkBody('password','Password is required').notEmpty();
+        req.checkBody('email', 'Invalid Eamil').isEmail();
+        req.checkBody('password', 'Invalid Password').isLength({min: 4});
+        var errors = req.validationErrors();
+        if (errors) {
+            var messages = [];
+            errors.forEach(function (error) {
+                messages.push(error.msg);
+            })
+            return done(null, false, req.flash('error', messages));
+        }
+
+        //查找用户是否存在
         User.findOne({email: email}, function (err, user) {
             if (err) {
                 return done(null, false, {message: 'Database error.'});

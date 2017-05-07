@@ -4,7 +4,8 @@ var passport = require('../auth/passport-config');
 
 /* GET users listing. */
 router.get('/signup', function (req, res, next) {
-    res.render('user/signup', {csrfToken: req.csrfToken(), error: req.flash('error')});
+    var messages = req.flash('error');
+    res.render('user/signup', {csrfToken: req.csrfToken(), errorMessages: messages});
 });
 
 router.post('/signup', passport.authenticate('local.signup', {
