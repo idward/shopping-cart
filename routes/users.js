@@ -16,9 +16,9 @@ router.post('/signup', passport.authenticate('local.signup', {
     res.redirect('/users/signin');
 });
 
-router.get('/signin', function (req, res, next) {
+router.get('/signin', passport.unAuthenticateMiddleware(), function (req, res, next) {
     var messages = req.flash('error');
-    res.render('user/signin',{csrfToken:req.csrfToken(),errorMessages:messages});
+    res.render('user/signin', {csrfToken: req.csrfToken(), errorMessages: messages});
 });
 
 router.post('/signin', passport.authenticate('local.signin', {
@@ -29,8 +29,13 @@ router.post('/signin', passport.authenticate('local.signin', {
     res.redirect('/users/profile');
 });
 
-router.get('/profile', function (req, res, next) {
+router.get('/profile', passport.authenticateMiddleware(), function (req, res, next) {
     res.render('user/profile');
+});
+
+router.get('/logout', function (req, res, next) {
+    req.logout();
+    res.redirect('/');
 });
 
 module.exports = router;

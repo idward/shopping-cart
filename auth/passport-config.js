@@ -91,11 +91,22 @@ passport.deserializeUser(function (user, done) {
 
 passport.authenticateMiddleware = function authenticateMiddleware() {
     return function (req, res, next) {
+        console.log('auth: ' + req.isAuthenticated());
         if (req.isAuthenticated()) {
-            next();
+            return next();
         }
         res.redirect('/');
     };
 };
+
+passport.unAuthenticateMiddleware = function unAuthenticateMiddleware() {
+    return function (req, res, next) {
+        console.log('auth: ' + req.isAuthenticated());
+        if (!req.isAuthenticated()) {
+            return next();
+        }
+        res.redirect('/');
+    }
+}
 
 module.exports = passport;
