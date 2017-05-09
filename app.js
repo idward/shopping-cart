@@ -7,8 +7,10 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var validator = require('express-validator');
 var expressHbs = require('express-handlebars');
+var mongoose = require('mongoose');
 var csrf = require('csurf');
 var flash = require('connect-flash');
+var MongoStore = require('connect-mongo')(session);
 var db = require('./db/db');
 
 var passport = require('passport');
@@ -34,7 +36,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(validator());
 app.use(cookieParser());
-app.use(session({secret: 'mysecret', resave: false, saveUninitialized: true}));
+app.use(session({
+    secret: 'mysecret',
+    resave: false,
+    saveUninitialized: true,
+    store: new MongoStore({mongooseConnection: mongoose.connection}),
+    cookie: {maxAge: 180 * 60 * 1000}
+}));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
