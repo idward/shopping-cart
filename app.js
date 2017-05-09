@@ -41,14 +41,14 @@ app.use(passport.session());
 app.use(csrf());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
-
 //all routes pass through
 app.use(function (req, res, next) {
-    req.locals.login = req.isAuthenticated();
+    res.locals.login = req.isAuthenticated();
     next();
 });
+
+app.use('/', index);
+app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
