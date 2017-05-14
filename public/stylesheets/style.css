@@ -10,3 +10,8 @@ a {
 .thumbnail img {
   max-height: 150px;
 }
+
+#checkout-form .form-group {
+  margin-left:0;
+  margin-right:0;
+}

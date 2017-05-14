@@ -2,8 +2,6 @@ var express = require('express');
 var router = express.Router();
 var Product = require('../models/product');
 var Cart = require('../component/cart');
-//初始化购物车
-var cart = new Cart();
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -25,6 +23,7 @@ router.get('/', function (req, res, next) {
 /* add product to cart*/
 router.get('/add-to-cart/:id', function (req, res, next) {
     var productId = req.params.id;
+    var cart = new Cart(req.session.cart ? req.session.cart : {});
     //数据库中查询产品
     Product.findById(productId, function (err, product) {
         if (err) {
@@ -32,9 +31,23 @@ router.get('/add-to-cart/:id', function (req, res, next) {
             return;
         }
         //增加产品去购物车中
-        cart.addProduct(product);
-        console.log(cart);
+        var productsInCart = cart.addProduct(product);
+        req.session.cart = productsInCart;
+        console.log(productsInCart);
+        res.redirect('/');
     });
+});
+
+router.get('/shopping-cart', function (req, res, next) {
+    res.render('shop/shopping-cart', {productsInCart: req.session.cart});
+});
+
+router.get('/checkout', function (req, res, next) {
+    res.render('shop/checkout',{csrfToken: req.csrfToken()});
+});
+
+router.post('/checkout', function (req, res, next) {
+    res.render('shop/payment');
 });
 
 

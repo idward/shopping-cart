@@ -10,7 +10,7 @@ var expressHbs = require('express-handlebars');
 var mongoose = require('mongoose');
 var csrf = require('csurf');
 var flash = require('connect-flash');
-var MongoStore = require('connect-mongo')(session);
+// var MongoStore = require('connect-mongo')(session);
 var db = require('./db/db');
 
 var passport = require('passport');
@@ -40,7 +40,7 @@ app.use(session({
     secret: 'mysecret',
     resave: false,
     saveUninitialized: true,
-    store: new MongoStore({mongooseConnection: mongoose.connection}),
+    // store: new MongoStore({mongooseConnection: mongoose.connection}),
     cookie: {maxAge: 180 * 60 * 1000}
 }));
 app.use(flash());

@@ -1,8 +1,8 @@
 //购物车模型
-module.exports = function Cart() {
-    this.items = {};
-    this.items.totalQuantity = 0;
-    this.items.totalPrice = 0;
+module.exports = function Cart(oldCart) {
+    this.items = oldCart.items || {};
+    this.totalQuantity = oldCart.totalQuantity || 0;
+    this.totalPrice = oldCart.totalPrice || 0;
     var productItem;
 
     this.addProduct = function (product) {
@@ -17,9 +17,9 @@ module.exports = function Cart() {
         this.items[productItemId].itemQuantity++;
         this.items[productItemId].itemPrice = this.items[productItemId].itemQuantity *
             this.items[productItemId].item.price;
-        this.items.totalQuantity = this.items.totalQuantity + 1;
-        this.items.totalPrice = this.items.totalPrice + this.items[productItemId].item.price;
-
-        return this.items;
+        this.totalQuantity = this.totalQuantity + 1;
+        this.totalPrice = this.totalPrice + this.items[productItemId].item.price;
+        //返回Cart对象
+        return this;
     };
 }
